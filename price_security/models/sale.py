@@ -6,9 +6,18 @@
 from openerp import fields, models, api, _
 
 
-class sale_order_line(models.Model):
+class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
+    # we add this fields instead of making original readonly because we need
+    # on change to change values, we make readonly in view because sometimes
+    # we want them to be writeable
+    price_unit_readonly = fields.Float(
+        related='price_unit',
+    )
+    tax_id_readonly = fields.Many2many(
+        related='tax_id',
+    )
     product_can_modify_prices = fields.Boolean(
         related='product_id.can_modify_prices',
         readonly=True,
@@ -18,22 +27,20 @@ class sale_order_line(models.Model):
     @api.constrains(
         'discount', 'product_can_modify_prices')
     def check_discount(self):
-        if (
-                self.user_has_groups('price_security.group_restrict_prices')
-                and not self.product_can_modify_prices
-        ):
+        if (self.user_has_groups('price_security.group_restrict_prices'
+                                 ) and not self.product_can_modify_prices):
             self.env.user.check_discount(
                 self.discount,
                 self.order_id.pricelist_id.id)
 
 
-class sale_order(models.Model):
+class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     @api.one
     @api.constrains(
         'pricelist_id',
-        'payment_term',
+        'payment_term_id',
         'partner_id')
     def check_priority(self):
         if not self.user_has_groups('price_security.group_restrict_prices'):
@@ -48,10 +55,10 @@ class sale_order(models.Model):
                 'configured on partner'
             ))
         if (
-                self.partner_id.property_payment_term and
-                self.payment_term and
-                self.partner_id.property_payment_term.sequence <
-                self.payment_term.sequence):
+                self.partner_id.property_payment_term_id and
+                self.payment_term_id and
+                self.partner_id.property_payment_term_id.sequence <
+                self.payment_term_id.sequence):
             raise Warning(_(
                 'Selected payment term priority can not be higher than '
                 'payment term configured on partner'
