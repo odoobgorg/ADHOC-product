@@ -33,9 +33,9 @@
         'sale',
     ],
     'data': [
-        'product_view.xml',
-        'salesman_group_view.xml',
-        'res_user.xml',
+        'views/product_view.xml',
+        'views/salesman_group_view.xml',
+        'views/res_user.xml',
         'security/ir.model.access.csv',
         'security/sale_security.xml',
     ],
@@ -43,8 +43,7 @@
     ],
     'test': [
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
     'application': False,
 }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
