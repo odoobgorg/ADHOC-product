@@ -5,11 +5,12 @@
 ==================================
 Pricelists information on Products
 ==================================
-Pricelists information on Products
-* Get right domain to pricelist items
-* Enable button to pricelist items
-* Send by default product or product template if you create a item from the
-product pricelist items button
+
+This modules add a new field on producs sales tab that shows price for that product for every pricelist.
+
+On installation it also changes sale pricelist option to "Advanced pricing based on formula
+"
+
 
 Installation
 ============

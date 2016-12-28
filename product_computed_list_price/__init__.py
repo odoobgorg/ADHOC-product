@@ -4,4 +4,4 @@
 # directory
 ##############################################################################
 from . import product
-from . import pricelist
+from . import wizard
